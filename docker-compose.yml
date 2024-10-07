@@ -1,0 +1,15 @@
+
+services:
+    app_django:
+        container_name: django_app
+        image: 'anderson2312/aviso-app:Latest'
+        build: .
+        restart: on-failure
+        ports:
+            - "8000:8000"  # Cambia 8000 por el puerto que necesites
+        environment:
+            - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+            - SOME_OTHER_ENV_VAR=${SOME_OTHER_ENV_VAR}  
+        volumes:
+            - .:/app  
+
