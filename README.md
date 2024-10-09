@@ -7,8 +7,8 @@ Rest API utilizando Django Rest Framework para la aplicación TerraInfo.
 Clonamos el repositorio
 
 ```
-git clone https://github.com/ceicol/django_terrainfo.git
-cd django_terrainfo
+git clone https://github.com/anderson-usme/trabajos.git
+cd trabajos
 ```
 
 Se crea el env virtual.
