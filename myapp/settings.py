@@ -120,3 +120,12 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',  # Permite el acceso a cualquier usuario
     ),
 }
+
+# Configuración de correo electrónico
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Cambia esto si usas otro servidor
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'anderusme@gmail.com'  # Tu dirección de correo
+EMAIL_HOST_PASSWORD = 'lguo yudh zrkk mjxz'  # esta contraseña se hizo con contraseña de aplicacion
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # Usar el mismo correo como remitente
