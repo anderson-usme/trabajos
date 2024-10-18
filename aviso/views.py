@@ -3,6 +3,7 @@ import threading
 import time
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
+from django.conf import settings 
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -72,8 +73,8 @@ def check_url():
                 send_mail(
                     'Alerta: Estado del servidor apagado',
                     'El estado general ha cambiado a apagado.',
-                    'anderusme@gmail.com',
-                    ['anderusme@gmail.com'],
+                    settings.EMAIL_HOST_USER,
+                    [settings.EMAIL_HOST_USER],
                     fail_silently=False,
                 )
         
@@ -137,8 +138,8 @@ def agregar_servidor(request):
                     send_mail(
                         'Alerta: Estado del servidor apagado',
                         'El estado general ha cambiado a apagado.',
-                        'anderusme@gmail.com',
-                        ['anderusme@gmail.com'],
+                        settings.EMAIL_HOST_USER,
+                        [settings.EMAIL_HOST_USER],
                         fail_silently=False,
                     )
 
