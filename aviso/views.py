@@ -48,24 +48,13 @@ def check_url():
                     url = service[server_type]['url']
                     try:
                         response = requests.get(url)
-                        if response.status_code == 200:
-                            service[server_type]['status'] = "activo"
-                        else:
-                            service[server_type]['status'] = "apagado"
+                        service[server_type]['status'] = "activo" if response.status_code == 200 else "apagado"
                     except:
                         service[server_type]['status'] = "Error"
 
-        todos_activos = True
-        for server in lista[0]['servers']:
-            for service in server['services']:
-                if service['backend']['status'] != "activo" or service['frontend']['status'] != "activo":
-                    todos_activos = False
+        todos_activos = all(service[server_type]['status'] == "activo" for server in lista[0]['servers'] for service in server['services'] for server_type in ['backend', 'frontend'])
 
-        if todos_activos:
-            nuevo_status = "activo"
-        else:
-            nuevo_status = "apagado"
-
+        nuevo_status = "activo" if todos_activos else "apagado"
         if nuevo_status != lista[0]['status_general']:
             lista[0]['status_general'] = nuevo_status
             
@@ -78,20 +67,12 @@ def check_url():
                     fail_silently=False,
                 )
         
-        # Pausa la ejecución del hilo durante 60 segundos
         time.sleep(60)
 
-# Iniciar el hilo en la configuración del servidor
-threading.Thread(target=check_url, daemon=True).start()  # el daemon hace que el programa principal no se cierre y si se cierra este también
+threading.Thread(target=check_url, daemon=True).start()
 
 @api_view(['GET'])
 def check_url_view(request):
-    """
-    Esta función permite a los usuarios consultar el estado actual de 
-    los servidores y servicios. Devuelve un resumen del estado general 
-    y la información detallada de cada servidor. La información se actualiza automáticamente cada 60 segundos 
-    gracias a la función check_url que se ejecuta en segundo plano.
-    """
     data = {
         "status_general": lista[0]['status_general'],
         "data": lista[0]['servers']
@@ -114,22 +95,12 @@ def agregar_servidor(request):
                     url = service[server_type]['url']
                     try:
                         response = requests.get(url)
-                        if response.status_code == 200:
-                            service[server_type]['status'] = "activo"
-                        else:
-                            service[server_type]['status'] = "apagado"
+                        service[server_type]['status'] = "activo" if response.status_code == 200 else "apagado"
                     except:
                         service[server_type]['status'] = "Error"
 
-            todos_activos = True
-            for service in new_server['services']:
-                if service['backend']['status'] != "activo" or service['frontend']['status'] != "activo":
-                    todos_activos = False
-
-            if todos_activos:
-                nuevo_status = "activo"
-            else:
-                nuevo_status = "apagado"
+            todos_activos = all(service[server_type]['status'] == "activo" for service in new_server['services'] for server_type in ['backend', 'frontend'])
+            nuevo_status = "activo" if todos_activos else "apagado"
 
             if nuevo_status != lista[0]['status_general']:
                 lista[0]['status_general'] = nuevo_status
@@ -146,4 +117,23 @@ def agregar_servidor(request):
             return Response({'message': 'Servidor añadido exitosamente.'}, status=status.HTTP_201_CREATED)
 
         return Response({'error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def eliminar_servidor(request, server_name):
+    global lista
+    
+    server_to_delete = None
+
+    # Busca el servidor por su nombre
+    for server in lista[0]['servers']:
+        if server.get('name') == server_name:
+            server_to_delete = server
+            break  
+
+    if server_to_delete:
+        lista[0]['servers'].remove(server_to_delete)
+        return Response({'message': 'Servidor eliminado exitosamente.'}, status=status.HTTP_204_NO_CONTENT)
+    else:
+        return Response({'error': 'Servidor no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
 

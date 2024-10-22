@@ -59,6 +59,11 @@ Register
 }
 
 ```
+Delete
+```
+se llama a la ruta http://localhost:8000/api/eliminar_servidor/nombre_del_servidor/ y se ingresa el nombre del servidor que deseamos borrar esta ruta cuenta con autenticacion
+
+```
 Token
 
 ```
