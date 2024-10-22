@@ -33,6 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
 def register(request):
     if request.method == 'POST':
         serializer = UserSerializer(data=request.data)
+        
         if serializer.is_valid():
             serializer.save()
             return Response({'message': 'Usuario creado exitosamente.'}, status=status.HTTP_201_CREATED)
@@ -48,13 +49,25 @@ def check_url():
                     url = service[server_type]['url']
                     try:
                         response = requests.get(url)
-                        service[server_type]['status'] = "activo" if response.status_code == 200 else "apagado"
+                        if response.status_code == 200:
+                            service[server_type]['status'] = "activo"
+                        else:
+                            service[server_type]['status'] = "apagado"
                     except:
                         service[server_type]['status'] = "Error"
 
-        todos_activos = all(service[server_type]['status'] == "activo" for server in lista[0]['servers'] for service in server['services'] for server_type in ['backend', 'frontend'])
+        todos_activos = all(
+            service[server_type]['status'] == "activo" 
+            for server in lista[0]['servers'] 
+            for service in server['services'] 
+            for server_type in ['backend', 'frontend']
+        )
 
-        nuevo_status = "activo" if todos_activos else "apagado"
+        if todos_activos:
+            nuevo_status = "activo"
+        else:
+            nuevo_status = "apagado"
+
         if nuevo_status != lista[0]['status_general']:
             lista[0]['status_general'] = nuevo_status
             
@@ -86,6 +99,7 @@ def check_url_view(request):
 def agregar_servidor(request):
     if request.method == 'POST':
         serializer = ServerSerializer(data=request.data)
+        
         if serializer.is_valid():
             new_server = serializer.validated_data
             lista[0]['servers'].append(new_server)
@@ -95,12 +109,23 @@ def agregar_servidor(request):
                     url = service[server_type]['url']
                     try:
                         response = requests.get(url)
-                        service[server_type]['status'] = "activo" if response.status_code == 200 else "apagado"
+                        if response.status_code == 200:
+                            service[server_type]['status'] = "activo"
+                        else:
+                            service[server_type]['status'] = "apagado"
                     except:
                         service[server_type]['status'] = "Error"
 
-            todos_activos = all(service[server_type]['status'] == "activo" for service in new_server['services'] for server_type in ['backend', 'frontend'])
-            nuevo_status = "activo" if todos_activos else "apagado"
+            todos_activos = all(
+                service[server_type]['status'] == "activo" 
+                for service in new_server['services'] 
+                for server_type in ['backend', 'frontend']
+            )
+            
+            if todos_activos:
+                nuevo_status = "activo"
+            else:
+                nuevo_status = "apagado"
 
             if nuevo_status != lista[0]['status_general']:
                 lista[0]['status_general'] = nuevo_status
@@ -136,4 +161,3 @@ def eliminar_servidor(request, server_name):
         return Response({'message': 'Servidor eliminado exitosamente.'}, status=status.HTTP_204_NO_CONTENT)
     else:
         return Response({'error': 'Servidor no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
-
