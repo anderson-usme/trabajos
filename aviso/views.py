@@ -142,22 +142,3 @@ def agregar_servidor(request):
 
         return Response({'error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-
-@api_view(['DELETE'])
-@permission_classes([IsAuthenticated])
-def eliminar_servidor(request, server_name):
-    global lista
-    
-    server_to_delete = None
-
-    # Busca el servidor por su nombre
-    for server in lista[0]['servers']:
-        if server.get('name') == server_name:
-            server_to_delete = server
-            break  
-
-    if server_to_delete:
-        lista[0]['servers'].remove(server_to_delete)
-        return Response({'message': 'Servidor eliminado exitosamente.'}, status=status.HTTP_204_NO_CONTENT)
-    else:
-        return Response({'error': 'Servidor no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
