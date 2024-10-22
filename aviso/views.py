@@ -93,7 +93,6 @@ def check_url_view(request):
     serializer = StatusResponseSerializer(data=data)
     serializer.is_valid(raise_exception=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
-
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def agregar_servidor(request):
@@ -116,11 +115,11 @@ def agregar_servidor(request):
                     except:
                         service[server_type]['status'] = "Error"
 
-            todos_activos = all(
-                service[server_type]['status'] == "activo" 
-                for service in new_server['services'] 
-                for server_type in ['backend', 'frontend']
-            )
+            # Lógica original para determinar todos_activos
+            todos_activos = True
+            for service in new_server['services']:
+                if service['backend']['status'] != "activo" or service['frontend']['status'] != "activo":
+                    todos_activos = False
             
             if todos_activos:
                 nuevo_status = "activo"
@@ -142,6 +141,7 @@ def agregar_servidor(request):
             return Response({'message': 'Servidor añadido exitosamente.'}, status=status.HTTP_201_CREATED)
 
         return Response({'error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
