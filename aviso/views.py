@@ -93,53 +93,7 @@ def check_url_view(request):
     serializer = StatusResponseSerializer(data=data)
     serializer.is_valid(raise_exception=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def agregar_servidor(request):
-    if request.method == 'POST':
-        serializer = ServerSerializer(data=request.data)
-        
-        if serializer.is_valid():
-            new_server = serializer.validated_data
-            lista[0]['servers'].append(new_server)
 
-            for service in new_server['services']:
-                for server_type in ['backend', 'frontend']:
-                    url = service[server_type]['url']
-                    try:
-                        response = requests.get(url)
-                        if response.status_code == 200:
-                            service[server_type]['status'] = "activo"
-                        else:
-                            service[server_type]['status'] = "apagado"
-                    except:
-                        service[server_type]['status'] = "Error"
-
-            todos_activos = True
-            for service in new_server['services']:
-                if service['backend']['status'] != "activo" or service['frontend']['status'] != "activo":
-                    todos_activos = False
-            
-            if todos_activos:
-                nuevo_status = "activo"
-            else:
-                nuevo_status = "apagado"
-
-            if nuevo_status != lista[0]['status_general']:
-                lista[0]['status_general'] = nuevo_status
-                
-                if nuevo_status == "apagado":
-                    send_mail(
-                        'Alerta: Estado del servidor apagado',
-                        'El estado general ha cambiado a apagado.',
-                        settings.EMAIL_HOST_USER,
-                        [settings.EMAIL_HOST_USER],
-                        fail_silently=False,
-                    )
-
-            return Response({'message': 'Servidor añadido exitosamente.'}, status=status.HTTP_201_CREATED)
-
-        return Response({'error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['DELETE'])
