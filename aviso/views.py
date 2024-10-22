@@ -115,7 +115,6 @@ def agregar_servidor(request):
                     except:
                         service[server_type]['status'] = "Error"
 
-            # Lógica original para determinar todos_activos
             todos_activos = True
             for service in new_server['services']:
                 if service['backend']['status'] != "activo" or service['frontend']['status'] != "activo":
