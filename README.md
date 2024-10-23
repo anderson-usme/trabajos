@@ -61,8 +61,16 @@ Register
 ```
 Delete
 ```
-se llama a la ruta http://localhost:8000/api/eliminar_servidor/nombre_del_servidor/ y se ingresa el nombre del servidor que deseamos borrar esta ruta cuenta con autenticacion
+se llama a la ruta http://localhost:8000/api/eliminar_servidor/nombre_del_servidor/ y se ingresa el nombre del servidor que deseamos borrar esta ruta cuenta con autenticacion se tiene que pasar una peticion delete
 
+```
+pausar servidor
+```
+se llama la ruta http://localhost:8000/api/pausar_servidor/nombre_del_servidor/ y se ingresa el nombre del servidor que deseamos pausar esta ruta requiere autenticacion se tiene que pasar una peticion post
+```
+Reanudar servidor
+```
+se llama la ruta http://localhost:8000/api/reanudar_servidor/nombre_del_servidor/ y se ingresa el nombre del servidor que deseamos reanudar esta ruta requiere autenticacion se tiene que pasar una peticion post
 ```
 Token
 

@@ -44,6 +44,9 @@ def check_url():
     global lista
     while True:
         for server in lista[0]['servers']:
+            if server.get('status') == 'pausado':
+                continue  # Ignora este servidor si está pausado
+
             for service in server['services']:
                 for server_type in ['backend', 'frontend']:
                     url = service[server_type]['url']
@@ -61,6 +64,7 @@ def check_url():
             for server in lista[0]['servers'] 
             for service in server['services'] 
             for server_type in ['backend', 'frontend']
+            if server.get('status') != 'pausado'
         )
 
         if todos_activos:
@@ -79,7 +83,7 @@ def check_url():
                     [settings.EMAIL_HOST_USER],
                     fail_silently=False,
                 )
-        
+
         time.sleep(60)
 
 threading.Thread(target=check_url, daemon=True).start()
@@ -102,6 +106,8 @@ def agregar_servidor(request):
         
         if serializer.is_valid():
             new_server = serializer.validated_data
+            new_server['paused'] = False  # Establecer el estado de pausa en False al agregar
+            new_server['status'] = 'activo'  # Estado inicial del servidor
             lista[0]['servers'].append(new_server)
 
             for service in new_server['services']:
@@ -128,7 +134,7 @@ def agregar_servidor(request):
 
             if nuevo_status != lista[0]['status_general']:
                 lista[0]['status_general'] = nuevo_status
-                
+
                 if nuevo_status == "apagado":
                     send_mail(
                         'Alerta: Estado del servidor apagado',
@@ -141,7 +147,6 @@ def agregar_servidor(request):
             return Response({'message': 'Servidor añadido exitosamente.'}, status=status.HTTP_201_CREATED)
 
         return Response({'error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
@@ -159,5 +164,37 @@ def eliminar_servidor(request, server_name):
     if server_to_delete:
         lista[0]['servers'].remove(server_to_delete)
         return Response({'message': 'Servidor eliminado exitosamente.'}, status=status.HTTP_204_NO_CONTENT)
-    else:
-        return Response({'error': 'Servidor no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
+    
+    return Response({'error': 'Servidor no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def pausar_servidor(request, server_name):
+    global lista
+
+    # Busca el servidor por su nombre
+    for server in lista[0]['servers']:
+        if server.get('name') == server_name:
+            server['paused'] = True  # Establecer el estado de pausa en True
+            server['status'] = 'pausado'  # Cambiar el estado a pausado
+            # Cambia el estado de los servicios a 'pausado'
+            for service in server['services']:
+                for server_type in ['backend', 'frontend']:
+                    service[server_type]['status'] = 'pausado'
+            return Response({'message': 'Servidor pausado exitosamente.'}, status=status.HTTP_200_OK)
+
+    return Response({'error': 'Servidor no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def reanudar_servidor(request, server_name):
+    global lista
+
+    # Busca el servidor por su nombre
+    for server in lista[0]['servers']:
+        if server.get('name') == server_name:
+            server['paused'] = False  # Establecer el estado de pausa en False
+            server['status'] = 'activo'  # Cambiar el estado a activo
+            return Response({'message': 'Servidor reanudado exitosamente.'}, status=status.HTTP_200_OK)
+
+    return Response({'error': 'Servidor no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
