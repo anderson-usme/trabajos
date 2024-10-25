@@ -148,6 +148,7 @@ def agregar_servidor(request):
 
         return Response({'error': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+<<<<<<< HEAD
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def eliminar_servidor(request, server_name):
@@ -198,3 +199,5 @@ def reanudar_servidor(request, server_name):
             return Response({'message': 'Servidor reanudado exitosamente.'}, status=status.HTTP_200_OK)
 
     return Response({'error': 'Servidor no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
+=======
+>>>>>>> aa5ac58db3b41a5d6d0f9ffde302b452f593b88f
