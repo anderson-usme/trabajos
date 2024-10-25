@@ -1,26 +1,16 @@
 # AppBasesdatos
 
-Rest API utilizando Django Rest Framework para la aplicación TerraInfo.
+Rest API utilizando Django Rest Framework para la aplicación.
 
 # Instalación
 
 Clonamos el repositorio
 
-```
-git clone https://github.com/anderson-usme/trabajos.git
-cd trabajos
-```
-
-Se crea el env virtual.
-
-## Clonamos el repositorio
-
 ```bash
 git clone https://github.com/anderson-usme/trabajos.git
 cd trabajos
-
-
 ```
+
 Se crea el env virtual.
 
 ```bash
@@ -44,8 +34,8 @@ python manage.py runserver
 ```
 Register
 
-```bash
-
+```
+```
  se llama a la ruta http://127.0.0.1:8000/api/register/ y se ingresa el objeto de esta forma con esta ruta creamos el usuario con el cual podremos conseguir el token y el refresh un ejemplo de como se deberia ver el objeto es :
 
  {
