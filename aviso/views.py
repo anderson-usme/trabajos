@@ -185,7 +185,7 @@ def pausar_servidor(request, server_name):
 
     return Response({'error': 'Servidor no encontrado.'}, status=status.HTTP_404_NOT_FOUND)
 
-@api_view(['POST'])
+@api_view(['POST']) 
 @permission_classes([IsAuthenticated])
 def reanudar_servidor(request, server_name):
     global server_list
