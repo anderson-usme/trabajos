@@ -1,0 +1,57 @@
+.container {
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+  color: #00B8D9;
+  text-align: center;
+}
+
+.add-server, .server-list {
+  margin-top: 20px;
+}
+
+.input {
+  width: calc(100% - 100px);
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.btn {
+  padding: 10px 20px;
+  background-color: #00B8D9;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-pause {
+  background-color: #f39c12;
+}
+
+.btn-delete {
+  background-color: #e74c3c;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.success {
+  color: green;
+  margin-top: 10px;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}

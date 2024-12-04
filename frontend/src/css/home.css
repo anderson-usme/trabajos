@@ -1,0 +1,23 @@
+.home-container {
+  text-align: center;
+  padding: 50px;
+}
+
+.home-container h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.home-container nav a {
+  margin: 0 10px;
+  color: #007bff;
+  font-weight: bold;
+}
+
+.home-container nav a:hover {
+  color: #0056b3;
+}
+
+
+  
+  

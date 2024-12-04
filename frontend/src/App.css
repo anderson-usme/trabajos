@@ -1,0 +1,35 @@
+.App {
+  text-align: center;
+}
+
+.navbar {
+  background-color: #007bff;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar a {
+  color: white;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}
+
+.navbar .logout-btn {
+  background-color: #dc3545;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.navbar .logout-btn:hover {
+  background-color: #c82333;
+}

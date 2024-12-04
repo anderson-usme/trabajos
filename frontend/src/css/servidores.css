@@ -1,0 +1,101 @@
+
+.servidores {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 800px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.servidores h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+
+.servidores input[type="text"],
+.servidores input[type="url"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.servidores button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 10px 0;
+  width: 100%;
+}
+
+.servidores button:hover {
+  background-color: #0056b3;
+}
+
+/* Contenedor de servidores */
+.servidores ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.servidores li {
+  background-color: #fff;
+  padding: 15px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.servidores .server-info {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.servidores .server-status {
+  font-weight: bold;
+}
+
+.servidores .eliminar-btn {
+  background-color: #dc3545;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.servidores .eliminar-btn:hover {
+  background-color: #c82333;
+}
+
+/* Estilos para el estado general de los servidores */
+.servidores .estado-general {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.servidores .estado-general.activo {
+  color: green;
+}
+
+.servidores .estado-general.apagado {
+  color: red;
+}
+
+.servidores .estado-general.error {
+  color: orange;
+}
+
